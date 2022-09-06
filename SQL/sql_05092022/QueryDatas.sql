@@ -54,3 +54,18 @@ SELECT TBLKhoa.TenKhoa
 FROM (TBLSinhVien INNER JOIN TBLKhoa ON TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa)
 GROUP BY TBLKhoa.TenKhoa
 HAVING COUNT(TBLSinhVien.MaSV) > 2;
+
+--3.k - Create temporare table
+CREATE TABLE ##TBLKhoaTemp (
+    TenKhoa NVARCHAR(255) NOT NULL,
+    SoSinhVien INT
+);
+
+INSERT INTO ##TBLKhoaTemp
+SELECT TBLKhoa.TenKhoa, COUNT(TBLSinhVien.MaSV)
+FROM (TBLSinhVien INNER JOIN TBLKhoa ON TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa)
+GROUP BY TBLKhoa.TenKhoa;
+
+SELECT ##TBLKhoaTemp.TenKhoa
+FROM ##TBLKhoaTemp
+WHERE ##TBLKhoaTemp.SoSinhVien > 2;
