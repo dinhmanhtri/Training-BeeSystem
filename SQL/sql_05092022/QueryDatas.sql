@@ -48,3 +48,9 @@ SELECT TBLKhoa.TenKhoa, COUNT(TBLSinhVien.MaSV) AS 'SoSinhVien'
 FROM TBLSinhVien, TBLKhoa 
 WHERE TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa
 GROUP BY TBLSinhVien.MaKhoa, TBLKhoa.TenKhoa;
+
+-- 3.k
+SELECT TBLKhoa.TenKhoa
+FROM (TBLSinhVien INNER JOIN TBLKhoa ON TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa)
+GROUP BY TBLKhoa.TenKhoa
+HAVING COUNT(TBLSinhVien.MaSV) > 2;
