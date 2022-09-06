@@ -37,35 +37,35 @@ INNER JOIN TBLKhoa
 ON TBLGiangVien.MaKhoa = TBLKhoa.MaKhoa
 WHERE TBLKhoa.TenKhoa = 'CONG NGHE SINH HOC';
 
--- 3.g
+-- 2.g
 SELECT TBLGiangVien.MaKhoa, TBLKhoa.TenKhoa, COUNT(TBLGiangVien.MaGV) AS 'SoGiangVien'
 FROM TBLGiangVien, TBLKhoa 
 WHERE TBLGiangVien.MaKhoa = TBLKhoa.MaKhoa
 GROUP BY TBLGiangVien.MaKhoa, TBLKhoa.TenKhoa;
 
--- 3.i
+-- 2.i
 SELECT TBLKhoa.TenKhoa, COUNT(TBLSinhVien.MaSV) AS 'SoSinhVien'
 FROM TBLSinhVien, TBLKhoa 
 WHERE TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa
 GROUP BY TBLSinhVien.MaKhoa, TBLKhoa.TenKhoa;
 
--- 3.k
+-- 2.k
 SELECT TBLKhoa.TenKhoa
 FROM (TBLSinhVien INNER JOIN TBLKhoa ON TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa)
 GROUP BY TBLKhoa.TenKhoa
 HAVING COUNT(TBLSinhVien.MaSV) > 2;
 
---3.k - Create temporare table
-CREATE TABLE ##TBLKhoaTemp (
+--2.k - Create temporary table
+CREATE TABLE #TBLKhoaTemp (
     TenKhoa NVARCHAR(255) NOT NULL,
     SoSinhVien INT
 );
 
-INSERT INTO ##TBLKhoaTemp
+INSERT INTO #TBLKhoaTemp
 SELECT TBLKhoa.TenKhoa, COUNT(TBLSinhVien.MaSV)
 FROM (TBLSinhVien INNER JOIN TBLKhoa ON TBLSinhVien.MaKhoa = TBLKhoa.MaKhoa)
 GROUP BY TBLKhoa.TenKhoa;
 
-SELECT ##TBLKhoaTemp.TenKhoa
-FROM ##TBLKhoaTemp
-WHERE ##TBLKhoaTemp.SoSinhVien > 2;
+SELECT #TBLKhoaTemp.TenKhoa
+FROM #TBLKhoaTemp
+WHERE #TBLKhoaTemp.SoSinhVien > 2;
